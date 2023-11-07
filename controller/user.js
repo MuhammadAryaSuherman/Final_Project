@@ -1,7 +1,7 @@
 // controllers/users.js
 const userModel = require('../models/user');
 const bcrypt = require('bcrypt');
-const generateAuthToken = require('./token');
+const generateAuthToken = require('../middleware/auth');
 
 class UserController {
     static async login(req, res) {
