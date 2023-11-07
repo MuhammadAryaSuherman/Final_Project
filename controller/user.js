@@ -1,7 +1,7 @@
 // controllers/users.js
-const jwt = require('jsonwebtoken');
 const userModel = require('../models/user');
 const bcrypt = require('bcrypt');
+const generateAuthToken = require('./token');
 
 class UserController {
     static async login(req, res) {
@@ -13,7 +13,7 @@ class UserController {
         const validPassword = await bcrypt.compare(password, user.password);
         if (!validPassword) return res.status(400).json({ message: 'Invalid username or password.' });
 
-        const token = jwt.sign({ id: user.id }, '0123456789ffsv');
+        const token = generateAuthToken(user.id);
         res.header('x-auth-token', token).json({ message: 'Login successful', token: token });
     };
 }
