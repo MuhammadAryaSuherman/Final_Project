@@ -8,6 +8,10 @@ const pool = new Pool({
     host: process.env.DB_HOST,
 });
 
+const query = (text, params) => {
+  return pool.query(text, params)
+}
+
 pool.connect((err, client, done) => {
   if (err) {
     console.error('Error connecting to the database:', err.stack);
@@ -16,3 +20,5 @@ pool.connect((err, client, done) => {
     client.release();
   }
 });
+
+module.exports = pool, query;
