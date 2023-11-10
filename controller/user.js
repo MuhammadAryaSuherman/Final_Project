@@ -1,24 +1,24 @@
 const userModel = require('../models/user');
 const bcrypt = require('bcrypt');
-const generateAuthToken = require('../middleware/auth');
+const { generateAuthToken } = require('../middleware/auth');
 
 class UserController {
     static async login(req, res) {
-        const { username, password } = req.body;
-        const user = await userModel.getUser(username);
+        const { email, username, password } = req.body;
+        const user = await userModel.getUserByUsernameOrEmail(email || username); // mencari pengguna berdasarkan email atau username
 
-        if (!user) return res.status(400).json({ message: 'Invalid username or password.' });
+        if (!user) return res.status(400).json({ message: 'User not found.' });
 
         const validPassword = await bcrypt.compare(password, user.password);
         if (!validPassword) return res.status(400).json({ message: 'Invalid username or password.' });
 
-        const token = generateAuthToken(user.id);
+        const token = generateAuthToken({ id: user.id, username: user.username, email: user.email });
         res.header('x-auth-token', token).json({ message: 'Login successful', token: token });
     };
 
     static async register(req, res) {
-        const { email, username, password} = req.body;
-    
+        const { email, username, password } = req.body;
+
         const newUser = {
             email, username, password,
         };
@@ -27,6 +27,9 @@ class UserController {
             const user = await userModel.createUser(newUser);
             res.status(201).json({ message: 'Registration successful', user });
         } catch (error) {
+            if (error.message === 'Email already in use') {
+                return res.status(400).json({ message: 'Email already in use' });
+            }
             console.error('Error during registration:', error);
             res.status(500).json({ message: 'Registration error' });
         }

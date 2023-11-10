@@ -21,4 +21,4 @@ pool.connect((err, client, done) => {
   }
 });
 
-module.exports = pool, query;
+module.exports = { pool, query };
