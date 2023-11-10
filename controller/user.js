@@ -5,7 +5,7 @@ const { generateAuthToken } = require('../middleware/auth');
 class UserController {
     static async login(req, res) {
         const { email, username, password } = req.body;
-        const user = await userModel.getUserByUsernameOrEmail(email || username); // mencari pengguna berdasarkan email atau username
+        const user = await userModel.getUserByUsernameOrEmail(email || username);
 
         if (!user) return res.status(400).json({ message: 'User not found.' });
 
@@ -18,14 +18,22 @@ class UserController {
 
     static async register(req, res) {
         const { email, username, password } = req.body;
-
+    
         const newUser = {
-            email, username, password,
+            email,
+            username,
+            password,
         };
-
+    
         try {
             const user = await userModel.createUser(newUser);
-            res.status(201).json({ message: 'Registration successful', user });
+            const loginLink = '/login';
+    
+            res.status(201).json({
+                message: 'Registration successful. Please proceed to login.',
+                user,
+                loginLink,
+            });
         } catch (error) {
             if (error.message === 'Email already in use') {
                 return res.status(400).json({ message: 'Email already in use' });
@@ -34,5 +42,6 @@ class UserController {
             res.status(500).json({ message: 'Registration error' });
         }
     }
+    
 };
 module.exports = UserController;
