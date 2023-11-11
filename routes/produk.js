@@ -10,7 +10,5 @@ router.get('/produk', productController.getProducts);
 // New route for adding a product
 router.post('/produk', productController.addProduct);
 
-router.get('/produk/:id/uploads/', express.static(path.join(__dirname,'upload')), productController.getProductsById)
-
 module.exports = router;
 
