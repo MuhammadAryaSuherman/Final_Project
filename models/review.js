@@ -1,14 +1,17 @@
-const pool = require('../config/config');
+// reviewModel.js
 
-const getReviews = async (productId) => {
-    try {
-        const query = 'SELECT * FROM reviews WHERE product_id = $1';
-        const result = await pool.query(query, [productId]);
-        return result.rows;
-    } catch (error) {
-        console.error('Error getting reviews:', error);
-        throw error;
-    }
+// Jika aplikasi berkembang, disarankan untuk menggunakan database seperti MongoDB, MySQL, dll.
+
+// Tetapi untuk tujuan contoh, kita akan menyimpan data ulasan sementara di memori.
+
+let reviews = [];
+
+// Fungsi untuk mendapatkan semua ulasan
+exports.getAllReviews = () => {
+  return reviews;
 };
 
-module.exports = {getReviews};
+// Fungsi untuk menambahkan ulasan baru
+exports.addReview = (newReview) => {
+  reviews.push(newReview);
+};

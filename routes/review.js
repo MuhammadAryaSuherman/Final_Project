@@ -1,7 +1,13 @@
+// reviewRoutes.js
+
 const express = require('express');
 const router = express.Router();
-const ReviewController = require('../controller/review');
+const reviewController = require('./reviewController'); // Sesuaikan dengan path file controller Anda
 
-router.get('/reviews', ReviewController.getReviews);
+// Endpoint untuk mendapatkan semua ulasan
+router.get('/reviews', reviewController.getAllReviews);
+
+// Endpoint untuk menambahkan ulasan baru
+router.post('/reviews', reviewController.addReview);
 
 module.exports = router;
