@@ -1,6 +1,16 @@
 const bcrypt = require('bcrypt');
 const { pool } = require('../config/config');
 
+const getAllUser = async () => {
+    const result = await pool.query('SELECT * FROM users');
+    return result.rows;
+};
+
+const getUsername = async (username) => {
+    const result = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
+    return result.rows[0];
+};
+
 const getUserByUsernameOrEmail = async (identifier) => {
     const result = await pool.query('SELECT * FROM users WHERE username = $1 OR email = $1', [identifier]);
     return result.rows[0];
@@ -26,5 +36,5 @@ const createUser = async ({ email, username, password }) => {
 };
 
 module.exports = {
-    getUserByUsernameOrEmail, doesEmailExist, createUser
+     getAllUser, getUsername, getUserByUsernameOrEmail, doesEmailExist, createUser
 };
