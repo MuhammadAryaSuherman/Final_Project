@@ -14,11 +14,11 @@ class UserController {
         }
     }
 
-    static async getUser(req, res) {
+    static async getUsername(req, res) {
         const { username } = req.params;
 
         try {
-            const user = await userModel.getUser(username);
+            const user = await userModel.getUsername(username);
 
             if (!user) {
                 return res.status(404).json({ message: 'User not found' });
