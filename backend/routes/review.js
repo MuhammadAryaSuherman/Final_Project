@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const reviewController = require('./reviewController'); // Sesuaikan dengan path file controller Anda
+const reviewController = require('../controller/review'); // Sesuaikan dengan path file controller Anda
 
 // Endpoint untuk mendapatkan semua ulasan
 router.get('/reviews', reviewController.getAllReviews);
