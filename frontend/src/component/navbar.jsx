@@ -74,7 +74,7 @@ const Navbar = () => {
           transition="color 0.2s ease-in-out"
         >
           <Image
-            src="../../public/logoBulat.jpg"
+            src="/logoBulat.jpg"
             maxHeight={8}
             maxWidth={8}
           ></Image>
