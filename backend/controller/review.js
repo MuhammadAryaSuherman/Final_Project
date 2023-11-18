@@ -1,5 +1,16 @@
-// reviewController.js
+const ReviewModel = require('../models/review');
 
+const ReviewController = {
+  async getReviewsByProductId(req, res) {
+    const productId = req.params.product_id;
+    try {
+      const reviews = await ReviewModel.getReviewsByProductId(productId);
+      res.json(reviews);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+}
 // Simpan data ulasan sementara
 let reviews = [];
 
@@ -26,7 +37,4 @@ exports.addReview = (req, res) => {
   res.status(201).json({ message: 'Ulasan berhasil ditambahkan.', review: newReview });
 };
 
-// Mendapatkan semua ulasan
-exports.getAllReviews = (req, res) => {
-  res.json(reviews);
-};
+module.exports = ReviewController;
