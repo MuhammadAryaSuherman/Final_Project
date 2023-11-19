@@ -4,6 +4,7 @@ const app = express();
 const userRoutes = require('./routes/user');
 const reviewRoutes = require('./routes/review');
 const productRoutes = require('./routes/produk');
+const orderRoutes = require("./routes/order")
 
 app.use(express.json());
 
@@ -22,6 +23,7 @@ app.use("/uploads", express.static("uploads"));
 app.use('/', userRoutes);
 app.use('/', reviewRoutes);
 app.use('/', productRoutes);
+app.use('/', orderRoutes)
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
