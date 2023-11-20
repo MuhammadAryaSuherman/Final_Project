@@ -49,6 +49,27 @@ const Navbar = () => {
     };
   }, []);
 
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const data = await loginUser(
+        e.target.identifier.value, // identifier can be either username or email
+        e.target.password.value
+      );
+      window.localStorage.setItem("token", data.token);
+      navigate("/");
+      onClose();
+    } catch (err) {
+      toast({
+        title: "Error",
+        description: err.message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <Flex
       w="95%"
@@ -90,8 +111,8 @@ const Navbar = () => {
       </Link>
       <HStack>
         {isLogin && (
-          <Link to="/newbook">
-            <Button colorScheme="blue">Create New Book</Button>
+          <Link to="/Akun">
+            <Button colorScheme="blue">Akun</Button>
           </Link>
         )}
         {!isLogin ? (
@@ -115,26 +136,7 @@ const Navbar = () => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <form
           id="login-form"
-          onSubmit={async (e) => {
-            e.preventDefault();
-            try {
-              const token = await loginUser(
-                e.target.email.value,
-                e.target.password.value
-              );
-              window.localStorage.setItem("token", token.token);
-              navigate("/");
-              onClose();
-            } catch (err) {
-              toast({
-                title: "Error",
-                description: err.message,
-                status: "error",
-                duration: 3000,
-                isClosable: true,
-              });
-            }
-          }}
+          onSubmit={handleLogin}
         >
           <ModalOverlay />
           <ModalContent bgColor="gray.700">
@@ -143,11 +145,11 @@ const Navbar = () => {
             <ModalBody>
               <VStack>
                 <FormControl isRequired>
-                  <FormLabel color="white">Email</FormLabel>
+                  <FormLabel color="white">Username or Email</FormLabel>
                   <Input
-                    name="email"
-                    type="email"
-                    placeholder="Enter your email address"
+                    name="identifier"
+                    type="text"
+                    placeholder="Enter your username or email"
                     bgColor="white"
                   />
                 </FormControl>
