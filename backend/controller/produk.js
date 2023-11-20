@@ -1,28 +1,27 @@
 const ProductModel = require('../models/produk');
 const multer = require('multer');
 
-// Multer configuration for handling file uploads
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads/'); // Save files to the uploads directory
+        cb(null, 'uploads/');
     },
     filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' + file.originalname); // Append timestamp to the filename
+        cb(null, Date.now() + '-' + file.originalname); 
     },
 });
 
 const upload = multer({ storage });
 
-const getProductsById = (req, res) => {
+const getProductById = (req, res) => {
     const id = req.params.id;
-    ProductModel.getProductsById(id, (err, data) => {
+    ProductModel.getProductById(id, (err, data) => {
         if (err) {
             return res.status(400).json({ error: err.message });
         }
         if (!data || data.length === 0) {
             return res.status(404).json({ error: 'Product not found' });
         }
-        return res.status(200).json({ data });
+        return res.status(200).json(data);
     });
 };
 
@@ -61,6 +60,6 @@ const addProduct = (req, res) => {
 
 module.exports = {
     getProducts,
-    getProductsById,
+    getProductById,
     addProduct
 };

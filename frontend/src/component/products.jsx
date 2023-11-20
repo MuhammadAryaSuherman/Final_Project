@@ -9,7 +9,7 @@ export default function Product({
   kategori_diamond,
   image,
 }) {
-  // Format harga dengan pemisah ribuan
+  
   const formattedHarga = new Intl.NumberFormat("id-ID").format(harga);
 
   return (

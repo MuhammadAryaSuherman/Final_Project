@@ -1,9 +1,9 @@
 const pool = require('../config/config');
 
-const getProductsById = (id, callback) => {
+const getProductById = (id, callback) => {
     pool.query(`SELECT * FROM produk WHERE id = $1`, [id], (err, results) => {
         if (err) {
-            return callback(err, null);
+            return callback(err, null)
         }
         return callback(null, results.rows);
     });
@@ -34,7 +34,7 @@ const addProduct = (product, callback) => {
 
 module.exports = {
     getProducts,
-    getProductsById,
+    getProductById,
     addProduct
 };
 
