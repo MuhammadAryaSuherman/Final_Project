@@ -89,11 +89,6 @@ const Navbar = () => {
         </Flex>
       </Link>
       <HStack>
-        {isLogin && (
-          <Link to="/newbook">
-            <Button colorScheme="blue">Create New Book</Button>
-          </Link>
-        )}
         {!isLogin ? (
           <Button onClick={onOpen} margin={1}>
             Login
