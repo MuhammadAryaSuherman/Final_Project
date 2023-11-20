@@ -30,6 +30,23 @@ class UserController {
             res.status(500).json({ message: 'Internal Server Error' });
         }
     }
+
+    static async getUserbyid(req, res) {
+        const { id } = req.params;
+
+        try {
+            const user = await userModel.getUserbyid(id);
+
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+
+            res.status(200).json({ message: 'success', data: user });
+        } catch (error) {
+            console.error('Error getting user by username:', error);
+            res.status(500).json({ message: 'Internal Server Error' });
+        }
+    }
     
     static async login(req, res) {
         const { email, username, password } = req.body;
