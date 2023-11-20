@@ -55,4 +55,14 @@ async function createOrder(productId, paymentMethod, gameId) {
   }
 }
 
-export { getAllProduct, getProductById, loginUser, registerUser, createOrder};
+async function getUserbyid(id) {
+    try {
+      const response = await instance.get(`/user/${id}`);
+      console.log('Response data:', response.data); 
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message || 'Something went wrong');
+    }
+  }
+
+export { getAllProduct, getProductById, loginUser, getUserbyid, registerUser, createOrder};
