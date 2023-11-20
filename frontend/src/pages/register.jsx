@@ -57,8 +57,8 @@ const Register = () => {
       px={10}
       mx={2}
       mt={8}
-      bgColor="#E1E1E0"
-      borderRadius="xl"
+      bgColor="white"
+      shadow="lg"
     >
       <Text fontSize="xl" fontWeight="bold" mb={4}>
         Register

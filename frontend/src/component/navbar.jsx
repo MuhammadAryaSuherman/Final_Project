@@ -53,7 +53,7 @@ const Navbar = () => {
     e.preventDefault();
     try {
       const data = await loginUser(
-        e.target.identifier.value, // identifier can be either username or email
+        e.target.identifier.value,
         e.target.password.value
       );
       window.localStorage.setItem("token", data.token);
