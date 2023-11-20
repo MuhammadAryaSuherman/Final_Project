@@ -6,8 +6,8 @@ const getAllUser = async () => {
     return result.rows;
 };
 
-const getUsername = async (username) => {
-    const result = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
+const getUserbyid = async (id) => {
+    const result = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
     return result.rows[0];
 };
 
@@ -36,5 +36,5 @@ const createUser = async ({ email, username, password }) => {
 };
 
 module.exports = {
-     getAllUser, getUsername, getUserByUsernameOrEmail, doesEmailExist, createUser
+     getAllUser, getUsername, getUserByUsernameOrEmail, doesEmailExist, createUser, getUserbyid
 };
