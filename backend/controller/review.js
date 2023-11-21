@@ -12,16 +12,14 @@ const ReviewController = {
   },
 
   async addReview(req, res) {
-    const { productId, review } = req.body;
+    const { produk_id, review } = req.body;
 
-    // Validasi input
-    if (!productId || !review) {
+    if (!produk_id || !review) {
       return res.status(400).json({ error: 'Harap lengkapi semua bidang ulasan.' });
     }
 
     try {
-      // Tambahkan ulasan baru menggunakan ReviewModel
-      const newReview = await ReviewModel.addReviewByProductId(productId, review);
+      const newReview = await ReviewModel.addReviewByProductId(produk_id, review);
       
       res.status(201).json({ message: 'Ulasan berhasil ditambahkan.', review: newReview });
     } catch (error) {

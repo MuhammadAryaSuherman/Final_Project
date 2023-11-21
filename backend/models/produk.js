@@ -1,12 +1,8 @@
 const pool = require('../config/config');
 
-const getProductById = (id, callback) => {
-    pool.query(`SELECT * FROM produk WHERE id = $1`, [id], (err, results) => {
-        if (err) {
-            return callback(err, null)
-        }
-        return callback(null, results.rows);
-    });
+const getProductById = async (id) => {
+    const result = await pool.query('SELECT * FROM produk WHERE id = $1', [id]);
+    return result.rows[0];
 };
 
 const getProducts = (callback) => {

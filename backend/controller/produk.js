@@ -12,18 +12,22 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-const getProductById = (req, res) => {
-    const id = req.params.id;
-    ProductModel.getProductById(id, (err, data) => {
-        if (err) {
-            return res.status(400).json({ error: err.message });
+const getProductById = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const product = await ProductModel.getProductById(id);
+
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
         }
-        if (!data || data.length === 0) {
-            return res.status(404).json({ error: 'Product not found' });
-        }
-        return res.status(200).json(data);
-    });
-};
+
+        res.status(200).json({ message: 'success', data: product });
+    } catch (error) {
+        console.error('Error getting product by ID:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
 
 const getProducts = (req, res) => {
     ProductModel.getProducts((err, data) => {
@@ -40,13 +44,12 @@ const addProduct = (req, res) => {
             return res.status(400).json({ error: err.message });
         }
 
-        // Multer has saved the file to req.file
         const product = {
             nama: req.body.nama,
             kategori_diamond: req.body.kategori_diamond,
             harga: req.body.harga,
             keterangan: req.body.keterangan,
-            image: req.file ? req.file.path : null, // Save the file path to the database
+            image: req.file ? req.file.path : null,
         };
 
         ProductModel.addProduct(product, (err, data) => {

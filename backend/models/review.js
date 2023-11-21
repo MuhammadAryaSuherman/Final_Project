@@ -9,15 +9,15 @@ const getReviewsByProductId = async (productId) => {
   }
 };
 
-const addReviewByProductId = async (productId, review) => {
+const addReviewByProductId = async (produk_id, review) => {
   try {
     const result = await pool.query(
       'INSERT INTO reviews (produk_id, review) VALUES ($1, $2) RETURNING *',
-      [productId, review]
+      [produk_id, review]
     );
-    return result.rows[0]; // Assuming you want to return the newly added review
+    return result.rows[0];
   } catch (error) {
-    throw new Error(`Error adding review for product ID ${productId}: ${error.message}`);
+    throw new Error(`Error adding review for product ID ${produk_id}: ${error.message}`);
   }
 };
 

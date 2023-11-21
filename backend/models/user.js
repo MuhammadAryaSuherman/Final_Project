@@ -36,5 +36,5 @@ const createUser = async ({ email, username, password }) => {
 };
 
 module.exports = {
-     getAllUser, getUsername, getUserByUsernameOrEmail, doesEmailExist, createUser, getUserbyid
+     getAllUser, getUserByUsernameOrEmail, doesEmailExist, createUser, getUserbyid
 };

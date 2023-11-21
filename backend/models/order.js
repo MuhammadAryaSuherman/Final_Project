@@ -1,11 +1,11 @@
 const { pool } = require('../config/config');
 
 const OrderModel = {
-  async createOrder(productId, gameId, paymentMethod) {
+  async createOrder(produk_id, id_game, metode_pembayaran) {
     try {
       const result = await pool.query(
-        'INSERT INTO orders (produk_id, id_game, metode_pembayaran) VALUES ($1, $2, $3) RETURNING *',
-        [productId, gameId, paymentMethod]
+        'INSERT INTO "order" (produk_id, id_game, metode_pembayaran) VALUES ($1, $2, $3) RETURNING *',
+        [produk_id, id_game, metode_pembayaran]
       );
       return result.rows[0];
     } catch (error) {
