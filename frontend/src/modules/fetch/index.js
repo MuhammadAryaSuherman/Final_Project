@@ -56,34 +56,79 @@ async function createOrder(produk_id, id_game, metode_pembayaran) {
 }
 
 async function getUserbyid(id) {
-    try {
-      const response = await instance.get(`/user/${id}`);
-      console.log('Response data:', response.data); 
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response.data.message || 'Something went wrong');
-    }
+  try {
+    const response = await instance.get(`/user/${id}`);
+    console.log('Response data:', response.data); 
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message || 'Something went wrong');
   }
+}
 
-  async function getReviewsByProductId(productId) {
-    try {
-      const response = await instance.get(`/produk/${productId}/reviews`);
-      console.log('Response data:', response.data);
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response.data.message || 'Something went wrong');
-    }
+async function getReviewsByProductId(productId) {
+  try {
+    const response = await instance.get(`/produk/${productId}/reviews`);
+    console.log('Response data:', response.data);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message || 'Something went wrong');
   }
+}
   
-  async function addReviewByProductId(produk_id , review) {
-    try {
-      const response = await instance.post(`/reviews/`, { produk_id, review });
-      console.log('Response data:', response.data);
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response.data.message || 'Something went wrong');
-    }
+async function addReviewByProductId(produk_id, review) {
+  try {
+    const response = await instance.post(`/reviews/`, { produk_id, review });
+    console.log('Response data:', response.data);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message || 'Something went wrong');
   }
+}
+  
+async function fetchReviews(productId) {
+  try {
+    const response = await instance.get(`/produk/${productId}/reviews`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching reviews:', error);
+    throw error;
+  }
+}
+  
+async function postReview(productId, newReview) {
+  try {
+    const response = await instance.post(`/produk/${productId}/reviews`, {
+      productId,
+      review: newReview,
+    });
+  return response.data;
+  } catch (error) {
+    console.error('Error posting review:', error);
+    throw error;
+  }
+}
+  
+async function putReview(productId, reviewId, updatedReview) {
+  try {
+    const response = await instance.put(`/produk/${productId}/reviews/${reviewId}`, {
+      review: updatedReview,
+    });
+  return response.data;
+  } catch (error) {
+    console.error('Error updating review:', error);
+    throw error;
+  }
+}
+  
+async function deleteReview(productId, reviewId) {
+  try {
+    const response = await instance.delete(`/produk/${productId}/reviews/${reviewId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting review:', error);
+    throw error;
+  }
+}
   
   export {
     getAllProduct,
@@ -94,4 +139,8 @@ async function getUserbyid(id) {
     createOrder,
     getReviewsByProductId,
     addReviewByProductId,
+    fetchReviews,
+    postReview,
+    putReview,
+    deleteReview
   };
