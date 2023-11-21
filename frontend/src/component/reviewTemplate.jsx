@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Box,
   Input,
+  Text,
   Button,
   Textarea,
   VStack,
@@ -19,7 +20,7 @@ const ReviewsComponent = () => {
   useEffect(() => {
     const urlPath = window.location.pathname;
     const parts = urlPath.split('/');
-    const productIdFromURL = parts[parts.length - 1]; // Get the last part of the URL
+    const productIdFromURL = parts[parts.length - 1];
     setProductId(productIdFromURL || '');
   }, []);
 
