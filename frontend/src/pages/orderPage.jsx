@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getProductById } from '../modules/fetch';
 import ProductDetailComponent from '../component/detailedProduct';
+import OrderForm from '../component/orderForm';
+import ReviewsComponent from '../component/reviewTemplate';
+import { HStack, VStack } from '@chakra-ui/react';
 
 const Orderpage = () => {
   const [product, setProduct] = useState(null);
@@ -29,7 +32,13 @@ const Orderpage = () => {
   return (
     <div className="product-container">
       {product ? (
+        <VStack>
+        <HStack>
         <ProductDetailComponent product={product} />
+        <OrderForm/>
+        </HStack>
+        <ReviewsComponent/>
+        </VStack>
       ) : (
         <p>Loading...</p>
       )}

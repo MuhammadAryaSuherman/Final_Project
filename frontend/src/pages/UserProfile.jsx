@@ -12,19 +12,18 @@ const UserProfile = () => {
     const fetchUserById = async () => {
       try {
         const response = await getUserbyid(id);
-        setUser(response); 
+        console.log(response);
+        const userData = response.data;
+  
+        setUser(userData); 
         setLoading(false);
       } catch (e) {
         console.error(e);
       }
     };
-
+  
     fetchUserById();
   }, [id]);
-
-  const handleEditProfile = () => {
-    console.log('Edit Profile clicked');
-  };
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';

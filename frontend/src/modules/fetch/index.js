@@ -32,7 +32,7 @@ async function getAllProduct() {
   }
 }
 
-async function getProductById() {
+async function getProductById(id) {
   try {
     const response = await instance.get(`/produk/${id}`);
     console.log("Response data:", response.data);
@@ -42,12 +42,12 @@ async function getProductById() {
   }
 }
 
-async function createOrder(productId, paymentMethod, gameId) {
+async function createOrder(produk_id, id_game, metode_pembayaran) {
   try {
     const response = await instance.post("/order", {
-      productId,
-      paymentMethod,
-      gameId,
+      produk_id,
+      metode_pembayaran,
+      id_game,
     });
     return response.data;
   } catch (error) {
@@ -65,4 +65,33 @@ async function getUserbyid(id) {
     }
   }
 
-export { getAllProduct, getProductById, loginUser, getUserbyid, registerUser, createOrder};
+  async function getReviewsByProductId(productId) {
+    try {
+      const response = await instance.get(`/produk/${productId}/reviews`);
+      console.log('Response data:', response.data);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message || 'Something went wrong');
+    }
+  }
+  
+  async function addReviewByProductId(produk_id , review) {
+    try {
+      const response = await instance.post(`/reviews/`, { produk_id, review });
+      console.log('Response data:', response.data);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message || 'Something went wrong');
+    }
+  }
+  
+  export {
+    getAllProduct,
+    getProductById,
+    loginUser,
+    getUserbyid,
+    registerUser,
+    createOrder,
+    getReviewsByProductId,
+    addReviewByProductId,
+  };

@@ -1,6 +1,5 @@
 import {
   Button,
-  color,
   Flex,
   Image,
   FormControl,
@@ -22,20 +21,33 @@ import {
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../modules/fetch";
+import {jwtDecode} from "jwt-decode";
 
 const Navbar = () => {
-  console.log("Navbar rendered");
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(() => {
+    const token = window.localStorage.getItem('token');
+    return !!token;
+  });
+  const [userId, setUserId] = useState(null);
   const toast = useToast();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = window.localStorage.getItem("token");
+  const getUser = () => {
+    const token = window.localStorage.getItem('token');
     if (token) {
+      const decoded = jwtDecode(token);
       setIsLogin(true);
+      setUserId(decoded.id);
+    } else {
+      setIsLogin(false);
+      setUserId(null);
     }
-  }, [window.localStorage.getItem("token")]);
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   const [showBorder, setShowBorder] = useState(false);
   useEffect(() => {
@@ -80,8 +92,8 @@ const Navbar = () => {
       paddingY="0.5rem"
       bg="white"
       color="black"
-      position="sticky"
-      zIndex="sticky"
+      position= "sticky"
+      zIndex= "sticky"
       top={0}
       borderBottom={showBorder ? "none" : "1px solid black"}
       transition="border-bottom 0.3s ease-in-out"
@@ -94,11 +106,7 @@ const Navbar = () => {
           _hover={{ color: "gray" }}
           transition="color 0.2s ease-in-out"
         >
-          <Image
-            src="/logoBulat.jpg"
-            maxHeight={8}
-            maxWidth={8}
-          ></Image>
+          <Image src="/logoBulat.jpg" maxHeight={8} maxWidth={8}></Image>
           <Text
             fontSize="xl"
             fontWeight="bold"
@@ -110,8 +118,8 @@ const Navbar = () => {
         </Flex>
       </Link>
       <HStack>
-        {isLogin && (
-          <Link to="/Akun">
+        {isLogin && userId && (
+          <Link to={`/user/${userId}`}>
             <Button colorScheme="blue">Akun</Button>
           </Link>
         )}
@@ -134,10 +142,7 @@ const Navbar = () => {
       </HStack>
 
       <Modal isOpen={isOpen} onClose={onClose}>
-        <form
-          id="login-form"
-          onSubmit={handleLogin}
-        >
+        <form id="login-form" onSubmit={handleLogin}>
           <ModalOverlay />
           <ModalContent bgColor="gray.700">
             <ModalHeader color="white">Login</ModalHeader>
