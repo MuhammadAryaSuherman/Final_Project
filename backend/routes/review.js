@@ -3,7 +3,7 @@ const router = express.Router();
 const reviewController = require('../controller/review');
 
 router.get('/produk/:id/reviews', reviewController.getReviewsByProductId);
-router.post('/produk/:id/reviews', reviewController.addReview);
+router.post('/reviews', reviewController.addReview);
 router.put('/produk/:id/reviews/:reviewId', reviewController.updateReview);
 router.delete('/produk/:id/reviews/:reviewId', reviewController.deleteReview);
 

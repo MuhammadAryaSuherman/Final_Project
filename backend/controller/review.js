@@ -12,32 +12,15 @@ const ReviewController = {
   },
 
   async addReview(req, res) {
-    const { review } = req.body;
-
-    if (!review) {
+    const { review, produk_id } = req.body;
+  
+    if (!review || !produk_id) {
       return res.status(400).json({ error: 'Harap lengkapi semua bidang ulasan.' });
     }
-
+  
     try {
-      const newReview = await ReviewModel.addReviewByProductId(review, req);
+      const newReview = await ReviewModel.addReviewByProductId(review, produk_id);
       res.status(201).json({ message: 'Ulasan berhasil ditambahkan.', review: newReview });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  },
-
-  async updateReview(req, res) {
-    const reviewId = req.params.reviewId;
-    const newReview = req.body.review;
-
-    try {
-      const updatedReview = await ReviewModel.updateReviewById(reviewId, newReview);
-
-      if (!updatedReview) {
-        return res.status(404).json({ error: 'Ulasan tidak ditemukan.' });
-      }
-
-      res.json({ message: 'Ulasan berhasil diperbarui.', review: updatedReview });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
