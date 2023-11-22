@@ -50,7 +50,7 @@ const UserProfile = () => {
         p={4}
         shadow="md"
         borderWidth="1px"
-        borderRadius="md"
+        borderRadius="xl"
         textAlign="center"
         width="400px"
         maxWidth="80%"

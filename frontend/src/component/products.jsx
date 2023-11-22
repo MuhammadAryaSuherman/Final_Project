@@ -28,7 +28,7 @@ export default function Product({
         transition="background-color 0.3s ease-in-out, color 0.3s ease-in-out"
       >
         <VStack spacing={2}>
-          <Image w={24} h={24} src={`http://localhost:3000/${image}`} />
+          <Image w={24} h={24} borderRadius="xl" src={`http://localhost:3000/${image}`} />
           <Heading size="md">{nama}</Heading>
           <Text>
             <span>Jumlah: </span>

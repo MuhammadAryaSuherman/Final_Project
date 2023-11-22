@@ -90,7 +90,7 @@ const Navbar = () => {
       justify="space-between"
       wrap="wrap"
       paddingY="0.5rem"
-      bg="white"
+      bg="gray.100"
       color="black"
       position= "sticky"
       zIndex= "sticky"
@@ -120,7 +120,7 @@ const Navbar = () => {
       <HStack>
         {isLogin && userId && (
           <Link to={`/user/${userId}`}>
-            <Button colorScheme="blue">Akun</Button>
+            <Button color="black" border="0.5px solid gray">Akun</Button>
           </Link>
         )}
         {!isLogin ? (

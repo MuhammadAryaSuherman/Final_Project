@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { createOrder } from '../modules/fetch/index';
 import {
+  Alert, 
+  AlertIcon,
   Box,
   Input,
   Button,
   FormControl,
   FormLabel,
-  FormHelperText,
+  Select, 
 } from '@chakra-ui/react';
 
 const OrderForm = () => {
@@ -20,7 +22,7 @@ const OrderForm = () => {
   useEffect(() => {
     const urlPath = window.location.pathname;
     const parts = urlPath.split('/');
-    const productIdFromURL = parts[parts.length - 1]; // Get the last part of the URL
+    const productIdFromURL = parts[parts.length - 1];
     setProductId(productIdFromURL || '');
   }, []);
 
@@ -28,34 +30,48 @@ const OrderForm = () => {
     e.preventDefault();
     setError(null);
     setIsLoading(true);
-
+  
     try {
       const response = await createOrder(produk_id, id_game, metode_pembayaran);
+      setIsLoading(false);
       setSuccessMessage('Order placed successfully!');
-      console.log('Order response:', response);
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 5000);
     } catch (error) {
-      setError(error.message || 'Something went wrong');
+      setIsLoading(false);
+      setError('Order failed. Please try again.');
     }
-
-    setIsLoading(false);
   };
 
   return (
-    <Box>
+    <Box boxShadow="2xl" padding={8} borderRadius="xl" marginLeft={3}>
       <h2>Order Form</h2>
-      {error && <p>Error: {error}</p>}
-      {successMessage && <p>{successMessage}</p>}
+      {successMessage && (
+        <Alert status="success" mb={4} variant="subtle" fontSize="lg" onClick={() => setSuccessMessage('')} cursor="pointer" isClosable>
+          <AlertIcon />
+          {successMessage}
+        </Alert>
+      )}
+      {error && (
+        <Alert status="error" mb={4} variant="subtle" fontSize="lg" onClick={() => setError('')} cursor="pointer" isClosable>
+          <AlertIcon />
+          {error}
+        </Alert>
+      )}
       <form onSubmit={handleSubmit}>
-        {/* Hidden input field for productId */}
         <input type="hidden" value={produk_id} name="productId" />
 
         <FormControl>
           <FormLabel>Payment Method:</FormLabel>
-          <Input
-            type="text"
+          <Select
             value={metode_pembayaran}
             onChange={(e) => setPaymentMethod(e.target.value)}
-          />
+            placeholder="Select payment method"
+          >
+            <option value="GoPay">GoPay</option>
+            <option value="Dana">Dana</option>
+          </Select>
         </FormControl>
         <br />
         <FormControl>
@@ -67,7 +83,7 @@ const OrderForm = () => {
           />
         </FormControl>
         <br />
-        <Button type="submit" isLoading={isLoading}>
+        <Button type="submit" isLoading={isLoading} border="1px solid gray">
           {isLoading ? 'Placing Order...' : 'Place Order'}
         </Button>
       </form>
@@ -76,5 +92,6 @@ const OrderForm = () => {
 };
 
 export default OrderForm;
+
 
 

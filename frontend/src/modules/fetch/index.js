@@ -77,7 +77,7 @@ async function getReviewsByProductId(productId) {
   
 async function addReviewByProductId(produk_id, review) {
   try {
-    const response = await instance.post(`/reviews/`, { produk_id, review });
+    const response = await instance.post(`/reviews`, { produk_id, review });
     console.log('Response data:', response.data);
     return response.data;
   } catch (error) {
@@ -91,19 +91,6 @@ async function fetchReviews(productId) {
     return response.data;
   } catch (error) {
     console.error('Error fetching reviews:', error);
-    throw error;
-  }
-}
-  
-async function postReview(productId, newReview) {
-  try {
-    const response = await instance.post(`/produk/${productId}/reviews`, {
-      productId,
-      review: newReview,
-    });
-  return response.data;
-  } catch (error) {
-    console.error('Error posting review:', error);
     throw error;
   }
 }
@@ -140,7 +127,6 @@ async function deleteReview(productId, reviewId) {
     getReviewsByProductId,
     addReviewByProductId,
     fetchReviews,
-    postReview,
     putReview,
     deleteReview
   };
