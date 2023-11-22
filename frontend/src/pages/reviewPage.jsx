@@ -1,3 +1,4 @@
+// ReviewPage.jsx
 import { useState, useEffect } from "react";
 import {
   Alert,
@@ -17,10 +18,9 @@ import {
   addReviewByProductId,
   putReview,
   deleteReview,
-} from "../modules/fetch/index";
-import { Link } from "react-router-dom";
+} from "../modules/fetch/";
 
-const ReviewsComponent = () => {
+const ReviewPage = () => {
   const [productId, setProductId] = useState("");
   const [reviews, setReviews] = useState([]);
   const [newReview, setNewReview] = useState("");
@@ -35,6 +35,13 @@ const ReviewsComponent = () => {
     setProductId(productIdFromURL || "");
   }, []);
 
+  useEffect(() => {
+    console.log("Product ID:", productId);
+    if (productId) {
+      fetchReviews();
+    }
+  }, [productId, showAllReviews]);
+
   const handleCloseAlert = () => {
     setAlertData(null);
   };
@@ -42,30 +49,18 @@ const ReviewsComponent = () => {
   const fetchReviews = async () => {
     try {
       const fetchedReviews = await getReviewsByProductId(productId);
-
-      // Limit the displayed reviews to the latest 5
-      const displayedReviews = fetchedReviews.slice(-5);
-
-      setReviews(displayedReviews);
+      console.log("Fetched Reviews:", fetchedReviews);
+      setReviews(fetchedReviews);
     } catch (error) {
       console.error("Error fetching reviews:", error);
     }
   };
-
-  useEffect(() => {
-    if (productId) {
-      fetchReviews();
-    }
-  }, [productId, showAllReviews]);
-
+  
   const handleSubmitReview = async () => {
     try {
       await addReviewByProductId(productId, newReview);
-    
-      const allReviews = await getReviewsByProductId(productId);
-      const displayedReviews = allReviews.slice(-5);
-      setReviews(displayedReviews);
-  
+      fetchReviews();
+
       setNewReview("");
       setAlertData({ type: "success", message: "Review added successfully!" });
     } catch (error) {
@@ -80,10 +75,8 @@ const ReviewsComponent = () => {
   const handleEditReview = async (reviewId, updatedReview) => {
     try {
       await putReview(productId, reviewId, updatedReview);
-      const updatedReviews = reviews.map((review) =>
-        review.id === reviewId ? { ...review, review: updatedReview } : review
-      );
-      setReviews(updatedReviews);
+      fetchReviews();
+
       setAlertData({
         type: "success",
         message: "Review updated successfully!",
@@ -103,8 +96,8 @@ const ReviewsComponent = () => {
   const handleDeleteReview = async (reviewId) => {
     try {
       await deleteReview(productId, reviewId);
-      const updatedReviews = reviews.filter((review) => review.id !== reviewId);
-      setReviews(updatedReviews);
+      fetchReviews();
+
       setAlertData({
         type: "success",
         message: "Review deleted successfully!",
@@ -200,15 +193,6 @@ const ReviewsComponent = () => {
             <Divider my="2px" />
           </Box>
         ))}
-        {showAllReviews ? null : (
-          <Box>
-            <Link to={`/products/${productId}/reviews`}>
-              <Button color="black" border="1px solid gray">
-                See More
-              </Button>
-            </Link>
-          </Box>
-        )}
         <Box width="100%">
           <Textarea
             value={newReview}
@@ -230,4 +214,4 @@ const ReviewsComponent = () => {
   );
 };
 
-export default ReviewsComponent;
+export default ReviewPage;
