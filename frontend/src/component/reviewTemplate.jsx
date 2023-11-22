@@ -55,7 +55,8 @@ const ReviewsComponent = () => {
   const handleSubmitReview = async () => {
     try {
       const addedReview = await addReviewByProductId(productId, newReview);
-      setReviews([...reviews, addedReview]);
+      console.log([...reviews, addedReview.review])
+      setReviews([...reviews, addedReview.review]);
       setNewReview("");
       setAlertData({ type: "success", message: "Review added successfully!" });
     } catch (error) {

@@ -47,7 +47,7 @@ const Navbar = () => {
 
   useEffect(() => {
     getUser();
-  }, []);
+  }, [window.localStorage.getItem('token')]);
 
   const [showBorder, setShowBorder] = useState(false);
   useEffect(() => {
@@ -93,7 +93,7 @@ const Navbar = () => {
       bg="gray.100"
       color="black"
       position= "sticky"
-      zIndex= "sticky"
+      zIndex= "5"
       top={0}
       borderBottom={showBorder ? "none" : "1px solid black"}
       transition="border-bottom 0.3s ease-in-out"
