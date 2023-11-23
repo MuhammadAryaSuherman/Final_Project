@@ -2,18 +2,22 @@ const { pool } = require('../config/config');
 
 const getReviewsByProductId = async (productId) => {
   try {
-    const result = await pool.query('SELECT * FROM reviews WHERE produk_id = $1', [productId]);
+    const result = await pool.query(
+      'SELECT reviews.id, reviews.produk_id, reviews.review, reviews.created_at, users.username FROM reviews INNER JOIN users ON reviews.user_id = users.id WHERE produk_id = $1',
+      [productId]
+    );
     return result.rows;
   } catch (error) {
     throw new Error(`Error getting reviews by product ID: ${error.message}`);
   }
 };
 
-const addReviewByProductId = async (review, productId) => {
+const addReviewByProductId = async (review, productId, userId) => {
   try {
+    const created_at = new Date();
     const result = await pool.query(
-      'INSERT INTO reviews (produk_id, review) VALUES ($1, $2) RETURNING *',
-      [productId, review]
+      'INSERT INTO reviews (produk_id, review, user_id, created_at) VALUES ($1, $2, $3, $4) RETURNING *',
+      [productId, review, userId, created_at]
     );
     return result.rows[0];
   } catch (error) {

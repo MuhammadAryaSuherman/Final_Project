@@ -1,4 +1,5 @@
 const ReviewModel = require('../models/review');
+const { decodeToken  } = require('../middleware/auth');
 
 const ReviewController = {
   async getReviewsByProductId(req, res) {
@@ -14,13 +15,21 @@ const ReviewController = {
   async addReviewByProductId(req, res) {
     const { review } = req.body;
     const productId = req.params.id;
-
+    
     if (!review || !productId) {
       return res.status(400).json({ error: 'Harap lengkapi semua bidang ulasan.' });
     }
 
     try {
-      const newReview = await ReviewModel.addReviewByProductId(review, productId);
+      const token = req.header('x-auth-token');
+      
+      if (!token) {
+        return res.status(401).json({ error: 'Access denied. No token provided.' });
+      }
+
+      const { id: userId } = decodeToken(token);
+
+      const newReview = await ReviewModel.addReviewByProductId(review, productId, userId);
       res.status(201).json({ message: 'Ulasan berhasil ditambahkan.', review: newReview });
     } catch (error) {
       res.status(500).json({ error: error.message });
