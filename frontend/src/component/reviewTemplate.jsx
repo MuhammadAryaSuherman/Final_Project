@@ -42,10 +42,7 @@ const ReviewsComponent = () => {
   const fetchReviews = async () => {
     try {
       const fetchedReviews = await getReviewsByProductId(productId);
-
-      // Limit the displayed reviews to the latest 5
       const displayedReviews = fetchedReviews.slice(-5);
-
       setReviews(displayedReviews);
     } catch (error) {
       console.error("Error fetching reviews:", error);

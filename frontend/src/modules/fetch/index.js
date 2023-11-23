@@ -76,9 +76,9 @@ async function getReviewsByProductId(productId) {
   }
 }
   
-async function addReviewByProductId(produk_id, review) {
+async function addReviewByProductId(productId, review) {
   try {
-    const response = await instance.post(`/reviews`, { produk_id, review });
+    const response = await instance.post(`/produk/${productId}/reviews`, { review });
     console.log('Response data:', response.data);
     return response.data;
   } catch (error) {
