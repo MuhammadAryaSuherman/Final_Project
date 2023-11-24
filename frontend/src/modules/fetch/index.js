@@ -69,16 +69,29 @@ async function getReviewsByProductId(productId) {
   try {
     const response = await instance.get(`/produk/${productId}/reviews`);
     console.log('Response data:', response.data);
-    return response.data;
+
+    const reviewsWithCreatedAt = response.data.map((review) => ({
+      ...review,
+      created_at: review.created_at,
+    }));
+
+    return reviewsWithCreatedAt;
   } catch (error) {
     console.error('Error fetching reviews:', error.response);
     throw new Error(error.response.data.message || 'Something went wrong');
   }
 }
+
   
-async function addReviewByProductId(produk_id, review) {
+async function addReviewByProductId(productId, review, token) {
   try {
-    const response = await instance.post(`/reviews`, { produk_id, review });
+    const response = await instance.post(`/produk/${productId}/reviews`,{ review },
+      {
+        headers: {
+          'x-auth-token': token,
+        },
+      }
+    );
     console.log('Response data:', response.data);
     return response.data;
   } catch (error) {

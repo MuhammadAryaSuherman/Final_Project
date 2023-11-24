@@ -18,7 +18,6 @@ import {
   putReview,
   deleteReview,
 } from "../modules/fetch/index";
-import { Link } from "react-router-dom";
 
 const ReviewsComponent = () => {
   const [productId, setProductId] = useState("");
@@ -26,7 +25,7 @@ const ReviewsComponent = () => {
   const [newReview, setNewReview] = useState("");
   const [alertData, setAlertData] = useState(null);
   const [editingReviewId, setEditingReviewId] = useState(null);
-  const [showAllReviews] = useState(false);
+  const [userToken] = useState('');
 
   useEffect(() => {
     const urlPath = window.location.pathname;
@@ -35,6 +34,12 @@ const ReviewsComponent = () => {
     setProductId(productIdFromURL || "");
   }, []);
 
+  useEffect(() => {
+    if (productId) {
+      fetchReviews();
+    }
+  }, [productId]);
+
   const handleCloseAlert = () => {
     setAlertData(null);
   };
@@ -42,35 +47,24 @@ const ReviewsComponent = () => {
   const fetchReviews = async () => {
     try {
       const fetchedReviews = await getReviewsByProductId(productId);
-
-      // Limit the displayed reviews to the latest 5
       const displayedReviews = fetchedReviews.slice(-5);
-
       setReviews(displayedReviews);
     } catch (error) {
       console.error("Error fetching reviews:", error);
     }
   };
 
-  useEffect(() => {
-    if (productId) {
-      fetchReviews();
-    }
-  }, [productId, showAllReviews]);
-
   const handleSubmitReview = async () => {
     try {
-      const addedReview = await addReviewByProductId(productId, newReview);
-      console.log([...reviews.slice(-5), addedReview.review])
+      const addedReview = await addReviewByProductId(productId, newReview, userToken);
       setReviews([...reviews.slice(-5), addedReview.review]);
-  
-      setNewReview("");
-      setAlertData({ type: "success", message: "Review added successfully!" });
+      setNewReview('');
+      setAlertData({ type: 'success', message: 'Review added successfully!' });
     } catch (error) {
-      console.error("Error adding review:", error);
+      console.error('Error adding review:', error);
       setAlertData({
-        type: "error",
-        message: "Failed to add review. Please try again.",
+        type: 'error',
+        message: 'Failed to add review. Please try again.',
       });
     }
   };
@@ -86,7 +80,6 @@ const ReviewsComponent = () => {
         type: "success",
         message: "Review updated successfully!",
       });
-
       setEditingReviewId(null);
       setNewReview("");
     } catch (error) {
@@ -115,7 +108,6 @@ const ReviewsComponent = () => {
       });
     }
   };
-  console.log(reviews)
 
   return (
     <Box width="100%" padding={4} borderRadius="xl">
@@ -140,17 +132,11 @@ const ReviewsComponent = () => {
             p={4}
             position="relative"
           >
-            {editingReviewId === reviewObj.id ? (
-              <Textarea
-                value={newReview}
-                onChange={(e) => setNewReview(e.target.value)}
-                placeholder="Edit your review..."
-              />
-            ) : (
-              <Text as="p" textAlign="left">
-                {String(reviewObj.review)}
-              </Text>
-            )}
+            <Text as="p" textAlign="left">
+              <strong>{reviewObj.username}</strong>: {String(reviewObj.review)}
+              <br />
+              <small>Created at: {new Date(reviewObj.created_at).toLocaleString()}</small>
+            </Text>
             <HStack position="absolute" top="4px" right="4px">
               {editingReviewId === reviewObj.id ? (
                 <>
@@ -175,39 +161,32 @@ const ReviewsComponent = () => {
                   </Button>
                 </>
               ) : (
-                <Button
-                  color="black"
-                  border="1px solid gray"
-                  size="xs"
-                  onClick={() => {
-                    setEditingReviewId(reviewObj.id);
-                    setNewReview(reviewObj.review);
-                  }}
-                >
-                  Edit
-                </Button>
+                <>
+                  <Button
+                    color="black"
+                    border="1px solid gray"
+                    size="xs"
+                    onClick={() => {
+                      setEditingReviewId(reviewObj.id);
+                      setNewReview(reviewObj.review);
+                    }}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    color="black"
+                    border="1px solid gray"
+                    size="xs"
+                    onClick={() => handleDeleteReview(reviewObj.id)}
+                  >
+                    Delete
+                  </Button>
+                </>
               )}
-              <Button
-                color="black"
-                border="1px solid gray"
-                size="xs"
-                onClick={() => handleDeleteReview(reviewObj.id)}
-              >
-                Delete
-              </Button>
             </HStack>
             <Divider my="2px" />
           </Box>
         ))}
-        {showAllReviews ? null : (
-          <Box>
-            <Link to={`/products/${productId}/reviews`}>
-              <Button color="black" border="1px solid gray">
-                See More
-              </Button>
-            </Link>
-          </Box>
-        )}
         <Box width="100%">
           <Textarea
             value={newReview}
