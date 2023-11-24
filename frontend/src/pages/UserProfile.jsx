@@ -47,7 +47,7 @@ const UserProfile = () => {
       height="100vh"
     >
       <Box
-        p={4}
+        p={10}
         shadow="md"
         borderWidth="1px"
         borderRadius="xl"
@@ -55,15 +55,16 @@ const UserProfile = () => {
         width="400px"
         maxWidth="80%"
         backgroundColor="white"
+        marginBottom="300px"
       >
-        <Text fontSize="xl" fontWeight="bold" mt={2} color="black">
+        <Text fontSize="2xl" fontWeight="bold" mt={2} color="black">
           User Profile
         </Text>
         <Avatar src={user.photoURL} size="2xl" mt={2} />
-        <Text fontSize="xl" fontWeight="bold" mt={4} color="gray.600">
+        <Text fontSize="2xl" fontWeight="bold" mt={4} color="gray.600">
           {user.username}
         </Text>
-        <Text fontSize="md" color="gray.500" mt={1}>
+        <Text fontSize="lg" color="gray.500" mt={1}>
           {user.email}
         </Text>
         

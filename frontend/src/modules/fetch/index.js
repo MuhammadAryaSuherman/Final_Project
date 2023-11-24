@@ -90,7 +90,8 @@ async function addReviewByProductId(productId, review, token) {
         headers: {
           'x-auth-token': token,
         },
-      }
+      },
+      console.log(token)
     );
     console.log('Response data:', response.data);
     return response.data;

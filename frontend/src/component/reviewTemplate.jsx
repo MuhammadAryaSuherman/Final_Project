@@ -25,7 +25,6 @@ const ReviewsComponent = () => {
   const [newReview, setNewReview] = useState("");
   const [alertData, setAlertData] = useState(null);
   const [editingReviewId, setEditingReviewId] = useState(null);
-  const [userToken] = useState('');
 
   useEffect(() => {
     const urlPath = window.location.pathname;
@@ -55,11 +54,21 @@ const ReviewsComponent = () => {
   };
 
   const handleSubmitReview = async () => {
+    const token = window.localStorage.getItem('token');
+  
     try {
-      const addedReview = await addReviewByProductId(productId, newReview, userToken);
-      setReviews([...reviews.slice(-5), addedReview.review]);
-      setNewReview('');
-      setAlertData({ type: 'success', message: 'Review added successfully!' });
+      if (token) {
+        const addedReview = await addReviewByProductId(productId, newReview, token);
+        setReviews([...reviews.slice(-5), addedReview.review]);
+        setNewReview('');
+        setAlertData({ type: 'success', message: 'Review added successfully!' });
+      } else {
+        console.error('No token available');
+        setAlertData({
+          type: 'error',
+          message: 'Authentication token not found. Please log in.',
+        });
+      }
     } catch (error) {
       console.error('Error adding review:', error);
       setAlertData({
