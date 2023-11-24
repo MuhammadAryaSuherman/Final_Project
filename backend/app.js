@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(
     cors({
       allowedHeaders:
-        "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+        "Origin, X-Requested-With, Content-Type, Accept, Authorization, x-auth-token",
       methods: "GET, POST, PUT, DELETE, PATCH, OPTIONS",
       optionsSuccessStatus: 200,
     })

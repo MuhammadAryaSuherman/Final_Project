@@ -107,11 +107,20 @@
 				{
 					"name": "POST Reviews",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwidXNlcm5hbWUiOiJib250aSIsImVtYWlsIjoiYnJlaWhhbmRkYW5pQGdtYWlsLmNvbSIsImlhdCI6MTcwMDgwNDQzMH0.KnJmVoL17SWr7tWvjGJ8wwYj7H1sMTp5TJFMwVKFTa8",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"produk_id\":\"5\",\r\n    \"review\":\"hhh\"\r\n}",
+							"raw": "{\r\n    \"review\":\"hhh\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -119,13 +128,15 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/reviews",
+							"raw": "http://localhost:3000/produk/5/reviews",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
+								"produk",
+								"5",
 								"reviews"
 							]
 						}
@@ -268,6 +279,17 @@
 									"language": "json"
 								}
 							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"login"
+							]
 						}
 					},
 					"response": []

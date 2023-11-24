@@ -15,7 +15,7 @@ const ReviewController = {
   async addReviewByProductId(req, res) {
     const { review } = req.body;
     const productId = req.params.id;
-    
+
     if (!review || !productId) {
       return res.status(400).json({ error: 'Harap lengkapi semua bidang ulasan.' });
     }
@@ -33,8 +33,8 @@ const ReviewController = {
       res.status(201).json({ message: 'Ulasan berhasil ditambahkan.', review: newReview });
     } catch (error) {
       res.status(500).json({ error: error.message });
-    }
-  },
+    } 
+  },     
 
   async updateReview(req, res) {
     const reviewId = req.params.reviewId;

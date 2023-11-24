@@ -7,14 +7,14 @@ const generateAuthToken = (payload) => {
 
 const decodeToken = (token) => {
     if (!token) {
-        throw new Error('No token provided');
+        throw new Error('No token provided'); 
     }
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
         return decoded;
     } catch (ex) {
-        throw new Error('Invalid token');
+        throw new Error('Invalid token or expired'); 
     }
 };
 
@@ -27,7 +27,8 @@ const authenticate = (req, res, next) => {
         req.user = decoded;
         next();
     } catch (ex) {
-        res.status(400).json({ message: 'Invalid token.' });
+        console.error('Token decoding error:', ex.message); 
+        res.status(400).json({ message: ex.message }); 
     }
 };
 
