@@ -18,6 +18,7 @@ import {
   putReview,
   deleteReview,
 } from "../modules/fetch/index";
+import {jwtDecode} from 'jwt-decode';
 
 const ReviewsComponent = () => {
   const [productId, setProductId] = useState("");
@@ -53,31 +54,52 @@ const ReviewsComponent = () => {
     }
   };
 
-  const handleSubmitReview = async () => {
-    const token = window.localStorage.getItem('token');
-  
+  const decodeToken = (token) => {
     try {
-      if (token) {
-        const addedReview = await addReviewByProductId(productId, newReview, token);
-        setReviews([...reviews.slice(-5), addedReview.review]);
-        setNewReview('');
-        setAlertData({ type: 'success', message: 'Review added successfully!' });
-      } else {
-        console.error('No token available');
-        setAlertData({
-          type: 'error',
-          message: 'Authentication token not found. Please log in.',
-        });
-      }
+        const decoded = jwtDecode(token);
+        return decoded;
     } catch (error) {
+        console.error('Error decoding token:', error);
+        return null;
+    }
+};
+
+const handleSubmitReview = async () => {
+  const token = window.localStorage.getItem('token');
+
+  try {
+      if (token) {
+          const decodedToken = decodeToken(token);
+          
+          if (decodedToken) {
+              const username = decodedToken.username;
+              
+              const addedReview = await addReviewByProductId(productId, newReview, token);
+              setReviews([...reviews.slice(-5), {...addedReview.review, username }]);
+              setNewReview('');
+              setAlertData({ type: 'success', message: 'Review added successfully!' });
+          } else {
+              console.error('Invalid token');
+              setAlertData({
+                  type: 'error',
+                  message: 'Invalid token. Please log in again.',
+              });
+          }
+      } else {
+          console.error('No token available');
+          setAlertData({
+              type: 'error',
+              message: 'Authentication token not found. Please log in.',
+          });
+      }
+  } catch (error) {
       console.error('Error adding review:', error);
       setAlertData({
-        type: 'error',
-        message: 'Failed to add review. Please try again.',
+          type: 'error',
+          message: 'Failed to add review. Please try again.',
       });
-    }
-  };
-
+  }
+};
   const handleEditReview = async (reviewId, updatedReview) => {
     try {
       await putReview(productId, reviewId, updatedReview);
