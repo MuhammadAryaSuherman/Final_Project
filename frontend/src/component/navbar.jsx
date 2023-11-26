@@ -17,6 +17,7 @@ import {
   useDisclosure,
   useToast,
   VStack,
+  Avatar,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -120,8 +121,8 @@ const Navbar = () => {
       <HStack>
         {isLogin && userId && (
           <Link to={`/user/${userId}`}>
-            <Button color="black" border="0.5px solid gray">Akun</Button>
-          </Link>
+            <Avatar size="sm"></Avatar>
+          </Link >
         )}
         {!isLogin ? (
           <Button onClick={onOpen} margin={1}>
@@ -144,13 +145,13 @@ const Navbar = () => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <form id="login-form" onSubmit={handleLogin}>
           <ModalOverlay />
-          <ModalContent bgColor="gray.700">
-            <ModalHeader color="white">Login</ModalHeader>
+          <ModalContent bgColor="gray.200">
+            <ModalHeader color="black">Login</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <VStack>
                 <FormControl isRequired>
-                  <FormLabel color="white">Username or Email</FormLabel>
+                  <FormLabel color="black">Username or Email</FormLabel>
                   <Input
                     name="identifier"
                     type="text"
@@ -159,7 +160,7 @@ const Navbar = () => {
                   />
                 </FormControl>
                 <FormControl isRequired>
-                  <FormLabel color="white">Password</FormLabel>
+                  <FormLabel color="black">Password</FormLabel>
                   <Input
                     type="password"
                     name="password"
