@@ -121,7 +121,7 @@ const Navbar = () => {
       <HStack>
         {isLogin && userId && (
           <Link to={`/user/${userId}`}>
-            <Avatar size="sm"></Avatar>
+            <Avatar size="sm" bg="gray.800" _hover={{opacity:"50%"}}></Avatar>
           </Link >
         )}
         {!isLogin ? (
