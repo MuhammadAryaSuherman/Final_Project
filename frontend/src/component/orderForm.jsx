@@ -91,7 +91,7 @@ const OrderForm = () => {
             onChange={(e) => setPaymentMethod(e.target.value)}
             placeholder="Select payment method"
           >
-            <option value="MidTrans">MidTrans</option>
+            <option value="MidTrans">Bank Transfer/Gopay/Shopeepay</option>
           </Select>
         </FormControl>
         <br />
