@@ -12,6 +12,11 @@ const query = (text, params) => {
   return pool.query(text, params)
 }
 
+const midtransConfig = {
+  clientKey: "SB-Mid-client-OTjdXouwEwi05ggX",
+  serverKey: "SB-Mid-server-MaZIIHijKMdozZbzqFx7CIJY",
+};
+
 pool.connect((err, client, done) => {
   if (err) {
     console.error('Error connecting to the database:', err.stack);
@@ -21,4 +26,4 @@ pool.connect((err, client, done) => {
   }
 });
 
-module.exports = { pool, query };
+module.exports = { pool, query, midtransConfig };

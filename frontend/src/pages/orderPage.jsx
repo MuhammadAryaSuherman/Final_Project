@@ -20,7 +20,6 @@ const Orderpage = () => {
     const fetchProduct = async () => {
       try {
         const productData = await getProductById(id);
-        console.log('Product Data:', productData);
         if (productData && productData.data) {
           setProduct(productData);
         } else {
@@ -63,10 +62,10 @@ const Orderpage = () => {
             <HStack
               marginBottom={20}
               marginTop={10}
-              shadow="dark-lg"
+              shadow="2xl"
               padding={10}
               borderRadius="xl"
-              bg="white"
+              bg="gray.100"
               minW="100%"
             >
               <ProductDetailComponent product={product} />

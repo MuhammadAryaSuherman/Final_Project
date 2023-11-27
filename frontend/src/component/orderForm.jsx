@@ -30,14 +30,36 @@ const OrderForm = () => {
     e.preventDefault();
     setError(null);
     setIsLoading(true);
-  
+
     try {
       const response = await createOrder(produk_id, id_game, metode_pembayaran);
-      setIsLoading(false);
-      setSuccessMessage('Order placed successfully!');
-      setTimeout(() => {
-        setSuccessMessage('');
-      }, 5000);
+
+      const { transactionToken } = response;
+      console.log(transactionToken);
+      window.snap.pay(transactionToken, {
+        onSuccess: function (result) {
+          setIsLoading(false);
+          setSuccessMessage('Pembayaran berhasil!');
+          setTimeout(() => {
+            setSuccessMessage('');
+          }, 5000);
+        },
+        onPending: function (result) {
+          setIsLoading(false);
+          setSuccessMessage('Pembayaran sedang diproses.');
+          setTimeout(() => {
+            setSuccessMessage('');
+          }, 5000);
+        },
+        onError: function (result) {
+          setIsLoading(false);
+          setError('Pembayaran gagal. Silakan coba lagi.');
+        },
+        onClose: function () {
+          setIsLoading(false);
+          setError('Pembayaran dibatalkan.');
+        },
+      });
     } catch (error) {
       setIsLoading(false);
       setError('Order failed. Please try again.');
@@ -69,8 +91,7 @@ const OrderForm = () => {
             onChange={(e) => setPaymentMethod(e.target.value)}
             placeholder="Select payment method"
           >
-            <option value="GoPay">GoPay</option>
-            <option value="Dana">Dana</option>
+            <option value="MidTrans">MidTrans</option>
           </Select>
         </FormControl>
         <br />
