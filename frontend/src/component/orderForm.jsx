@@ -36,7 +36,7 @@ const OrderForm = () => {
 
       const { transactionToken } = response;
       console.log(transactionToken);
-      window.snap.pay(transactionToken, {
+      window.snap.pay(transactionToken.token, {
         onSuccess: function (result) {
           setIsLoading(false);
           setSuccessMessage('Pembayaran berhasil!');
