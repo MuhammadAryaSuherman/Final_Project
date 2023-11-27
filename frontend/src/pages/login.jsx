@@ -7,51 +7,42 @@ import {
   FormLabel,
   Input,
   InputGroup,
-  HStack,
   InputRightElement,
   Stack,
   Button,
   Heading,
-  Text,
   useColorModeValue,
-  Link,
   useToast,
+  Grid,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { registerUser } from "../modules/fetch";
-import { useNavigate } from "react-router-dom";
+import { loginUser } from "../modules/fetch";
+import { useNavigate, Link as RouterLink } from "react-router-dom";
 
-export default function Register2() {
+export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const toast = useToast();
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     console.log("OK");
-    if (password !== confirmPassword) {
-      return;
-    }
     try {
-      await registerUser(
-        e.target.username.value,
-        e.target.email.value,
-        password
-      );
+      await loginUser(username, password);
       toast({
-        title: "Registered",
-        description: "You have successfully registered.",
+        title: "Logged in",
+        description: "You have successfully logged in.",
         status: "success",
         duration: 3000,
         isClosable: true,
       });
       navigate("/");
     } catch (error) {
-      console.log("Registration Error:", error.message);
+      console.log("Login Error:", error.message);
       toast({
         title: "An error occurred.",
         description: error?.message || "An error occurred. Please try again.",
@@ -64,16 +55,11 @@ export default function Register2() {
   };
 
   return (
-    <Flex
-      minH={"70vh"}
-      align={"center"}
-      justify={"center"}
-      bg={useColorModeValue("gray.50", "gray.800")}
-    >
+    <Flex bg={useColorModeValue("gray.50", "gray.800")}>
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
           <Heading fontSize={"4xl"} textAlign={"center"}>
-            Register
+            Login
           </Heading>
         </Stack>
         <Box
@@ -83,7 +69,7 @@ export default function Register2() {
           p={8}
         >
           <Stack spacing={4} minWidth={400}>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleLogin}>
               {error && (
                 <Box color="red.500" mb={4}>
                   {error}
@@ -91,21 +77,13 @@ export default function Register2() {
               )}
 
               <FormControl id="username" isRequired>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>Username or Email</FormLabel>
                 <Input
                   type="text"
-                  placeholder="Username..."
+                  placeholder="Username or Email..."
                   name="username"
-                  autoComplete="off"
-                />
-              </FormControl>
-
-              <FormControl id="email" isRequired mt={5}>
-                <FormLabel>Email</FormLabel>
-                <Input
-                  type="email"
-                  placeholder="Email..."
-                  name="email"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   autoComplete="off"
                 />
               </FormControl>
@@ -132,46 +110,33 @@ export default function Register2() {
                   </InputRightElement>
                 </InputGroup>
               </FormControl>
-              <FormControl id="password" isRequired mt={5}>
-                <FormLabel>Confirm Password</FormLabel>
-                <InputGroup>
-                  <Input
-                    type={showPassword ? "text" : "password"}
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="Confirm Password..."
-                    autoComplete="off"
-                  />
-                  <InputRightElement h={"full"}>
-                    <Button
-                      variant={"ghost"}
-                      onClick={() =>
-                        setShowPassword((showPassword) => !showPassword)
-                      }
-                    >
-                      {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
-                {password !== confirmPassword && (
-                  <Text fontSize="m" color="red.500" mt={2}>
-                    The password does not match
-                  </Text>
-                )}
-              </FormControl>
               <Stack spacing={10} pt={2} mt={5}>
-                <Button
-                  type="submit"
-                  loadingText="Submitting"
-                  size="lg"
-                  bg={"blue.400"}
-                  color={"white"}
-                  _hover={{
-                    bg: "blue.500",
-                  }}
-                >
-                  Register
-                </Button>
+                <Grid templateColumns="1fr 1fr" gap={4}>
+                  <Button
+                    type="submit"
+                    loadingText="Logging In"
+                    size="lg"
+                    bg={"blue.400"}
+                    color={"white"}
+                    _hover={{
+                      bg: "blue.500",
+                    }}
+                  >
+                    Login
+                  </Button>
+                  <Button
+                    as={RouterLink}
+                    to="/register"
+                    size="lg"
+                    bg={"blue.400"}
+                    color={"white"}
+                    _hover={{
+                      bg: "blue.100",
+                    }}
+                  >
+                    Register
+                  </Button>
+                </Grid>
               </Stack>
             </form>
           </Stack>

@@ -1,17 +1,29 @@
-import { useState } from "react";
+"use client";
+
 import {
+  Flex,
   Box,
-  Button,
   FormControl,
   FormLabel,
   Input,
+  InputGroup,
+  HStack,
+  InputRightElement,
+  Stack,
+  Button,
+  Heading,
   Text,
+  useColorModeValue,
+  Link,
   useToast,
 } from "@chakra-ui/react";
+import { useState } from "react";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { registerUser } from "../modules/fetch";
 import { useNavigate } from "react-router-dom";
 
-const Register = () => {
+export default function Register() {
+  const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
@@ -20,6 +32,7 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("OK");
     if (password !== confirmPassword) {
       return;
     }
@@ -51,89 +64,120 @@ const Register = () => {
   };
 
   return (
-    <Box
-      w="65%"
-      py={4}
-      px={10}
-      mx={2}
-      mt={8}
-      bgColor="white"
-      shadow="lg"
+    <Flex
+      minH={"70vh"}
+      align={"center"}
+      justify={"center"}
+      bg={useColorModeValue("gray.50", "gray.800")}
     >
-      <Text fontSize="xl" fontWeight="bold" mb={4}>
-        Register
-      </Text>
-
-      <Box borderWidth="1px" borderRadius="lg" p={4} border="none">
-        <form onSubmit={handleSubmit}>
-          {error && (
-            <Box color="red.500" mb={4}>
-              {error}
-            </Box>
-          )}
-
-          <FormControl isRequired>
-            <FormLabel>Username</FormLabel>
-            <Input
-              type="username"
-              name="username"
-              placeholder="Enter your username"
-              borderColor="black"
-              borderWidth={2}
-              borderRadius="xl"
-            />
-          </FormControl>
-
-          <FormControl isRequired>
-            <FormLabel>Email</FormLabel>
-            <Input
-              type="email"
-              name="email"
-              placeholder="Enter your email address"
-              borderColor="black"
-              borderWidth={2}
-              borderRadius="xl"
-            />
-          </FormControl>
-
-          <FormControl isRequired mt={4}>
-            <FormLabel>Password</FormLabel>
-            <Input
-              type="password"
-              placeholder="Enter a password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              borderColor="black"
-              borderWidth={2}
-              borderRadius="xl"
-            />
-          </FormControl>
-
-          <FormControl isRequired mt={4}>
-            <FormLabel>Confirm Password</FormLabel>
-            <Input
-              type="password"
-              placeholder="Confirm your password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              borderColor="black"
-              borderWidth={2}
-              borderRadius="xl"
-            />
-            {password !== confirmPassword && (
-              <Text fontSize="xs" color="red.500">
-                The password does not match
-              </Text>
-            )}
-          </FormControl>
-
-          <Button mt={6} colorScheme="teal" type="submit">
+      <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
+        <Stack align={"center"}>
+          <Heading fontSize={"4xl"} textAlign={"center"}>
             Register
-          </Button>
-        </form>
-      </Box>
-    </Box>
-  );
-};
+          </Heading>
+        </Stack>
+        <Box
+          rounded={"lg"}
+          bg={useColorModeValue("white", "gray.700")}
+          boxShadow={"lg"}
+          p={8}
+        >
+          <Stack spacing={4} minWidth={400}>
+            <form onSubmit={handleSubmit}>
+              {error && (
+                <Box color="red.500" mb={4}>
+                  {error}
+                </Box>
+              )}
 
-export default Register;
+              <FormControl id="username" isRequired>
+                <FormLabel>Username</FormLabel>
+                <Input
+                  type="text"
+                  placeholder="Username..."
+                  name="username"
+                  autoComplete="off"
+                />
+              </FormControl>
+
+              <FormControl id="email" isRequired mt={5}>
+                <FormLabel>Email</FormLabel>
+                <Input
+                  type="email"
+                  placeholder="Email..."
+                  name="email"
+                  autoComplete="off"
+                />
+              </FormControl>
+
+              <FormControl id="password" isRequired mt={5}>
+                <FormLabel>Password</FormLabel>
+                <InputGroup>
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Password..."
+                    autoComplete="off"
+                  />
+                  <InputRightElement h={"full"}>
+                    <Button
+                      variant={"ghost"}
+                      onClick={() =>
+                        setShowPassword((showPassword) => !showPassword)
+                      }
+                    >
+                      {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+              </FormControl>
+              <FormControl id="password" isRequired mt={5}>
+                <FormLabel>Confirm Password</FormLabel>
+                <InputGroup>
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Confirm Password..."
+                    autoComplete="off"
+                  />
+                  <InputRightElement h={"full"}>
+                    <Button
+                      variant={"ghost"}
+                      onClick={() =>
+                        setShowPassword((showPassword) => !showPassword)
+                      }
+                    >
+                      {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+                {password !== confirmPassword && (
+                  <Text fontSize="m" color="red.500" mt={2}>
+                    The password does not match
+                  </Text>
+                )}
+              </FormControl>
+              <Stack spacing={10} pt={2} mt={5}>
+                <Button
+                  type="submit"
+                  loadingText="Submitting"
+                  to="/login"
+                  size="lg"
+                  bg={"blue.400"}
+                  color={"white"}
+                  _hover={{
+                    bg: "blue.500",
+                  }}
+                >
+                  Register
+                </Button>
+              </Stack>
+            </form>
+          </Stack>
+        </Box>
+      </Stack>
+    </Flex>
+  );
+}
