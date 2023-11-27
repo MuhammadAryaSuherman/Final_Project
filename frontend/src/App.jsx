@@ -6,19 +6,22 @@ import Register from "./pages/register2";
 import Orderpage from "./pages/orderPage";
 import UserProfile from "./pages/UserProfile";
 import ReviewPage from "./pages/reviewPage";
+import GamePage from "./pages/gamepage";
+
 
 function App() {
   return (
     <VStack minH="100vh" minW="100vw" bgColor="gray.100">
       <Router>
         <Navbar />
-          <Routes>
-            <Route path= {"/"} element={<Homepage/>}/>
+        <Routes>
+            <Route path= {"/homepage"} element={<Homepage/>}/>
             <Route path= {"/products/:id"} element= {<Orderpage/>}/>
             <Route path= {"/products/:id/reviews"} element= {<ReviewPage/>}/>
-            <Route path={"/user/:id"} element={<UserProfile />} />
+            <Route path= {"/user/:id"} element={<UserProfile />} />
             <Route path= {"/register"} element={<Register />}/>
-          </Routes>
+            <Route path= {"/"} element={<GamePage />}/>
+        </Routes>
       </Router>
     </VStack>
   );
