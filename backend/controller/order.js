@@ -1,20 +1,28 @@
 const OrderModel = require('../models/order');
 const { midtransConfig } = require('../config/config');
 const midtransClient = require('midtrans-client');
+const { decodeToken } = require('../middleware/auth')
 
 const OrderController = {
   async createOrder(req, res) {
-    const { produk_id, id_game, metode_pembayaran } = req.body;
-    console.log(produk_id, id_game, metode_pembayaran)
+    const token = req.header('x-auth-token');
 
-    if (!produk_id || !id_game || !metode_pembayaran) {
-      return res.status(400).json({ error: 'Harap lengkapi semua informasi pesanan.' });
+    if (!token) {
+      return res.status(401).json({ error: 'Access denied. No token provided.' });
     }
 
     try {
-      const newOrder = await OrderModel.createOrder(produk_id, id_game, metode_pembayaran);
+      const { id: user_id } = decodeToken(token); 
       
-    
+      const { produk_id, id_game, metode_pembayaran } = req.body;
+      console.log(produk_id, id_game, metode_pembayaran, user_id);
+
+      if (!produk_id || !id_game || !metode_pembayaran || !user_id) {
+        return res.status(400).json({ error: 'Harap lengkapi semua informasi pesanan.' });
+      }
+
+      const newOrder = await OrderModel.createOrder(produk_id, id_game, metode_pembayaran, user_id);
+      
       const snap = new midtransClient.Snap({
         isProduction: false, 
         serverKey: midtransConfig.serverKey,
@@ -22,21 +30,22 @@ const OrderController = {
       });
 
       const parameter = {
-          transaction_details: {
+        transaction_details: {
           order_id: newOrder.id,
           gross_amount: 100000,
-      },
-    };console.log(parameter.transaction_details.id)
-        
+        },
+      };
+      
       snap.createTransaction(parameter)
         .then((transactionToken) => {
-          console.log(transactionToken)
+          console.log(transactionToken);
           res.status(201).json({ message: 'Pesanan berhasil dibuat.', order: newOrder, transactionToken });
         })
         .catch((error) => {
           res.status(500).json({ error: error.message });
         });
     } catch (error) {
+      console.log(error)
       res.status(500).json({ error: error.message });
     }
   },
