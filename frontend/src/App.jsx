@@ -7,6 +7,7 @@ import Register from "./pages/register";
 import Orderpage from "./pages/orderPage";
 import UserProfile from "./pages/UserProfile";
 import GamePage from "./pages/gamepage";
+import Footer from './component/footer';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path= {"/register"} element={<Register />}/>
             <Route path= {"/"} element={<GamePage />}/>
         </Routes>
+        <Footer />
       </Router>
     </VStack>
   );
