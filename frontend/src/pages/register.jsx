@@ -7,14 +7,12 @@ import {
   FormLabel,
   Input,
   InputGroup,
-  HStack,
   InputRightElement,
   Stack,
   Button,
   Heading,
   Text,
   useColorModeValue,
-  Link,
   useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
@@ -24,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
@@ -49,7 +48,7 @@ export default function Register() {
         duration: 3000,
         isClosable: true,
       });
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       console.log("Registration Error:", error.message);
       toast({
@@ -132,11 +131,12 @@ export default function Register() {
                   </InputRightElement>
                 </InputGroup>
               </FormControl>
-              <FormControl id="password" isRequired mt={5}>
+
+              <FormControl id="confirmPassword" isRequired mt={5}>
                 <FormLabel>Confirm Password</FormLabel>
                 <InputGroup>
                   <Input
-                    type={showPassword ? "text" : "password"}
+                    type={showConfirmPassword ? "text" : "password"}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="Confirm Password..."
@@ -146,10 +146,10 @@ export default function Register() {
                     <Button
                       variant={"ghost"}
                       onClick={() =>
-                        setShowPassword((showPassword) => !showPassword)
+                        setShowConfirmPassword((show) => !show)
                       }
                     >
-                      {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                      {showConfirmPassword ? <ViewIcon /> : <ViewOffIcon />}
                     </Button>
                   </InputRightElement>
                 </InputGroup>
@@ -159,11 +159,12 @@ export default function Register() {
                   </Text>
                 )}
               </FormControl>
+
               <Stack spacing={10} pt={2} mt={5}>
                 <Button
                   type="submit"
-                  loadingText="Submitting"
                   to="/login"
+                  loadingText="Submitting"
                   size="lg"
                   bg={"blue.400"}
                   color={"white"}

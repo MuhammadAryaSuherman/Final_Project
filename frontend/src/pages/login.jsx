@@ -30,9 +30,9 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("OK");
     try {
-      await loginUser(username, password);
+      const data = await loginUser(username, password);
+      window.localStorage.setItem("token", data.token);
       toast({
         title: "Logged in",
         description: "You have successfully logged in.",
@@ -53,7 +53,7 @@ export default function Login() {
       setError(error?.message || "An error occurred");
     }
   };
-
+    
   return (
     <Flex bg={useColorModeValue("gray.50", "gray.800")}>
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
