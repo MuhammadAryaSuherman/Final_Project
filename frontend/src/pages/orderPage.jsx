@@ -50,6 +50,8 @@ const Orderpage = () => {
         isClosable: true,
       });
       setAlertShown(true);
+      
+      window.location.href = '/login';
     }
   };
   

@@ -4,7 +4,7 @@ import { Box, Text, VStack } from '@chakra-ui/react';
 
 const Footer = () => {
   return (
-    <Box as="footer" p={4} bgColor="#333" color="white" mt="auto" width="100%">
+    <Box as="footer" p={4} bgColor="gray.100" color="black" mt="auto" width="95%" borderTop="1px solid black">
       <VStack spacing={2}>
         <Text>&copy; 2023 Fourstore </Text>
       </VStack>

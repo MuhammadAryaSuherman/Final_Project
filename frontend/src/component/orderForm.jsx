@@ -61,7 +61,7 @@ const OrderForm = () => {
         produk_id,
         id_game,
         metode_pembayaran,
-        token // Pass token directly to the createOrder function
+        token 
       );
   
       console.log(response);
