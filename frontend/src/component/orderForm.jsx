@@ -10,6 +10,7 @@ import {
   FormLabel,
   Select, 
 } from '@chakra-ui/react';
+import { jwtDecode } from 'jwt-decode';
 
 const OrderForm = () => {
   const [produk_id, setProductId] = useState('');
@@ -18,6 +19,8 @@ const OrderForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
+  const [currentUser, setCurrentUser] = useState(null);
+
 
   useEffect(() => {
     const urlPath = window.location.pathname;
@@ -26,13 +29,42 @@ const OrderForm = () => {
     setProductId(productIdFromURL || '');
   }, []);
 
+  useEffect(() => {
+    const token = window.localStorage.getItem('token');
+    if (token) {
+      setCurrentUser(jwtDecode(token));
+    }
+  }, []);
+
+  const decodeToken = (token) => {
+    try {
+      const decoded = jwtDecode(token);
+      return decoded;
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return null;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
     setIsLoading(true);
-
+  
     try {
-      const response = await createOrder(produk_id, id_game, metode_pembayaran);
+      const token = window.localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token found');
+      }
+  
+      const response = await createOrder(
+        produk_id,
+        id_game,
+        metode_pembayaran,
+        token // Pass token directly to the createOrder function
+      );
+  
+      console.log(response);
 
       const { transactionToken } = response;
       console.log(transactionToken);

@@ -42,13 +42,15 @@ async function getProductById(id) {
   }
 }
 
-async function createOrder(produk_id, id_game, metode_pembayaran) {
+async function createOrder(produk_id, id_game, metode_pembayaran, token) {
   try {
     const response = await instance.post("/order", {
       produk_id,
       metode_pembayaran,
       id_game,
-    });
+    },{headers: {
+      'x-auth-token': token,
+    }});
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.message || "Something went wrong");
