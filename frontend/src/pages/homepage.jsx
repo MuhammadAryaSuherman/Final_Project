@@ -7,9 +7,10 @@ import { useLocation } from "react-router-dom";
 export default function Homepage() {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
 
-  // Get the page query parameter from the URL
+  const itemsPerPage = 5;
+  const itemsPerRow = 3;
+
   const location = useLocation();
   const pageQueryParam = new URLSearchParams(location.search).get("page");
   const initialPage = pageQueryParam ? parseInt(pageQueryParam, 10) : 1;
@@ -25,7 +26,7 @@ export default function Homepage() {
     };
 
     fetchProducts();
-    setCurrentPage(initialPage); // Set the initial page
+    setCurrentPage(initialPage);
   }, [initialPage]);
 
   const totalPages = Math.ceil(products.length / itemsPerPage);
@@ -44,34 +45,23 @@ export default function Homepage() {
   const isSmallScreen = useBreakpointValue({ base: true, md: false });
 
   return (
-    <VStack w="100%" spacing="10" justifyContent="center" mt="20px">
-      {isSmallScreen ? (
-        visibleProducts.map((product) => (
-          <Product
-            key={product.id}
-            {...product}
-            flexBasis="100%"
-            textAlign="center"
-            my="10px"
-          />
-        ))
-      ) : (
-        <>
-          <HStack w="100%" spacing="10" justifyContent="center" flexWrap="wrap">
-            {visibleProducts.map((product) => (
-              <Product
-                key={product.id}
-                {...product}
-                flexBasis={`calc(33.33% - 20px)`}
-                flexGrow="0"
-                flexShrink="0"
-                textAlign="center"
-                my="10px"
-              />
-            ))}
-          </HStack>
-        </>
-      )}
+    <VStack w="100%" overflowX="hidden" spacing={isSmallScreen ? "5" : "10"} justifyContent="center" mt="20px">
+      {Array.from({ length: Math.ceil(visibleProducts.length / itemsPerRow) }).map((_, rowIndex) => (
+        <HStack key={rowIndex} w="100%" spacing="10" justifyContent="center">
+          {visibleProducts.slice(rowIndex * itemsPerRow, (rowIndex + 1) * itemsPerRow).map((product) => (
+            <Product
+              key={product.id}
+              {...product}
+              flexBasis={`calc(${100 / itemsPerRow}% - 20px)`}
+              flexGrow="0"
+              flexShrink="0"
+              textAlign="center"
+              my="7px"
+              mx="0"
+            />
+          ))}
+        </HStack>
+      ))}
       <HStack mt="20px">
         <Button onClick={handlePrevPage} disabled={currentPage === 1}>
           Previous
