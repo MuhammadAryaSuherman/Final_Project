@@ -12,6 +12,18 @@ const OrderModel = {
       throw new Error(`Error creating order: ${error.message}`);
     }
   },
+
+  async getOrdersByUserId(user_id) {
+    try {
+      const result = await pool.query(
+        'SELECT * FROM "order" WHERE user_id = $1',
+        [user_id]
+      );
+      return result.rows;
+    } catch (error) {
+      throw new Error(`Error getting orders: ${error.message}`);
+    }
+  },
 };
 
 module.exports = OrderModel;

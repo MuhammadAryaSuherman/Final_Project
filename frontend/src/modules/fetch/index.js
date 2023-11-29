@@ -67,6 +67,21 @@ async function getUserbyid(id) {
   }
 }
 
+
+async function getOrdersByUserId(user_id, token) {
+  try {
+    const response = await instance.get(`/order/user/${user_id}`, {
+      headers: {
+        'x-auth-token': token,
+      },
+    });
+    console.log(response.data); // Add this line
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message || 'Something went wrong');
+  }
+}
+
 async function getReviewsByProductId(productId) {
   try {
     const response = await instance.get(`/produk/${productId}/reviews`);
@@ -139,6 +154,7 @@ async function deleteReview(productId, reviewId) {
     getProductById,
     loginUser,
     getUserbyid,
+    getOrdersByUserId,
     registerUser,
     createOrder,
     getReviewsByProductId,

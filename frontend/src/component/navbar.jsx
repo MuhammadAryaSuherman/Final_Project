@@ -5,6 +5,10 @@ import {
   Text,
   HStack,
   Avatar,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import {jwtDecode} from "jwt-decode";
@@ -78,25 +82,29 @@ const Navbar = () => {
       </Link>
       <HStack>
         {isLogin && userId && (
-          <Link to={`/user/${userId}`}>
-            <Avatar size="sm" bg="gray.800" _hover={{ opacity: "50%" }}></Avatar>
-          </Link>
+          <Menu>
+            <MenuButton as={Avatar} size="sm" bg="gray.800" _hover={{ opacity: "50%" }}></MenuButton>
+            <MenuList>
+              <MenuItem as={Link} to={`/user/${userId}`}>
+                Akun
+              </MenuItem>
+              <MenuItem as={Link} to={`/order-history`}>
+                Riwayat Pembelian
+              </MenuItem>
+              <MenuItem onClick={() => {
+                window.localStorage.removeItem("token");
+                setIsLogin(false);
+                navigate("/");
+              }}>
+                Logout
+              </MenuItem>
+            </MenuList>
+          </Menu>
         )}
-        {!isLogin ? (
+        {!isLogin && (
           <Link to="/login">
             <Button margin={1}>Login</Button>
           </Link>
-        ) : (
-          <Button
-            colorScheme="red"
-            onClick={() => {
-              window.localStorage.removeItem("token");
-              setIsLogin(false);
-              navigate("/");
-            }}
-          >
-            Logout
-          </Button>
         )}
       </HStack>
     </Flex>

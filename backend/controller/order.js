@@ -49,6 +49,16 @@ const OrderController = {
       res.status(500).json({ error: error.message });
     }
   },
+
+  async getOrdersByUserId(req, res) {
+    const { user_id } = req.params;
+    try {
+      const orders = await OrderModel.getOrdersByUserId(user_id);
+      res.status(200).json({ orders });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
 };
 
 module.exports = OrderController;

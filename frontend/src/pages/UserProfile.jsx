@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Avatar, Text, Flex, Button } from '@chakra-ui/react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom'; // Import Link from react-router-dom
 import { getUserbyid } from "../modules/fetch";
 
 const UserProfile = () => {

@@ -1,5 +1,6 @@
 import { VStack } from "@chakra-ui/react";
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import OrderHistory from './component/OrderHistory';
 import Navbar from "./component/navbar";
 import Homepage from "./pages/homepage";
 import Login from "./pages/login";
@@ -20,6 +21,7 @@ function App() {
             <Route path= {"/login"} element={<Login />}/>
             <Route path= {"/register"} element={<Register />}/>
             <Route path= {"/"} element={<GamePage />}/>
+            <Route path="/order-history" element={<OrderHistory />} />
         </Routes>
       </Router>
     </VStack>
