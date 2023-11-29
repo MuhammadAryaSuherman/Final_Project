@@ -11,7 +11,7 @@ const GamePage = () => {
             <Box
               width="200px"
               height="200px"
-              backgroundColor="blue.500"
+             
               margin="4"
               rounded="lg"
               _hover={{
@@ -35,7 +35,7 @@ const GamePage = () => {
           <Box
             width="200px"
             height="200px"
-            backgroundColor="green.500"
+         
             margin="4"
             rounded="lg"
             _hover={{
@@ -59,7 +59,7 @@ const GamePage = () => {
         <Box
           width="200px"
           height="200px"
-          backgroundColor="orange.500"
+        
           margin="4"
           rounded="lg"
           _hover={{
@@ -83,7 +83,7 @@ const GamePage = () => {
         <Box
           width="200px"
           height="200px"
-          backgroundColor="purple.500"
+       
           margin="4"
           rounded="lg"
           _hover={{
@@ -108,7 +108,7 @@ const GamePage = () => {
         <Box
           width="200px"
           height="200px"
-          backgroundColor="pink.500"
+         
           margin="4"
           rounded="lg"
           _hover={{
