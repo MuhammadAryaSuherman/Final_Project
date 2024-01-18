@@ -1,7 +1,8 @@
-import { HStack, VStack, useBreakpointValue, Button } from "@chakra-ui/react";
+import { HStack, VStack,  Button , Box} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Product from "../component/products";
 import { getAllProduct } from "../modules/fetch";
+import { useMediaQuery } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
 
 export default function Homepage() {
@@ -42,25 +43,40 @@ export default function Homepage() {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   };
 
-  const isSmallScreen = useBreakpointValue({ base: true, md: false });
+  const [isSmallScreen] = useMediaQuery("(max-width: 48em)");
 
   return (
     <VStack w="100%" overflowX="hidden" spacing={isSmallScreen ? "5" : "10"} justifyContent="center" mt="20px">
-      {Array.from({ length: Math.ceil(visibleProducts.length / itemsPerRow) }).map((_, rowIndex) => (
-        <HStack key={rowIndex} w="100%" spacing="10" justifyContent="center">
-          {visibleProducts.slice(rowIndex * itemsPerRow, (rowIndex + 1) * itemsPerRow).map((product) => (
-            <Product
-              key={product.id}
-              {...product}
-              flexBasis={`calc(${100 / itemsPerRow}% - 20px)`}
-              flexGrow="0"
-              flexShrink="0"
-              textAlign="center"
-              my="7px"
-              mx="0"
-            />
-          ))}
-        </HStack>
+      {visibleProducts.map((product) => (
+        <Box key={product.id} w="100%" mb={isSmallScreen ? "10px" : "0"}>
+          {isSmallScreen ? (
+            <VStack spacing="10" justifyContent="center">
+              <Product
+                key={product.id}
+                {...product}
+                flexBasis={`calc(100% - 20px)`}
+                flexGrow="0"
+                flexShrink="0"
+                textAlign="center"
+                my="7px"
+                mx="0"
+              />
+            </VStack>
+          ) : (
+            <HStack w="100%" spacing="10" justifyContent="center">
+              <Product
+                key={product.id}
+                {...product}
+                flexBasis={`calc(${100 / itemsPerRow}% - 20px)`}
+                flexGrow="0"
+                flexShrink="0"
+                textAlign="center"
+                my="7px"
+                mx="0"
+              />
+            </HStack>
+          )}
+        </Box>
       ))}
       <HStack mt="20px">
         <Button onClick={handlePrevPage} disabled={currentPage === 1}>

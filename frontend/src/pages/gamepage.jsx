@@ -1,18 +1,21 @@
 import React from 'react';
-import { Box, ChakraProvider, Image } from '@chakra-ui/react';
+import { VStack, HStack, Box, ChakraProvider, Image } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+import { useMediaQuery } from '@chakra-ui/react';
 
 const GamePage = () => {
+  const [isSmallScreen] = useMediaQuery('(max-width: 48em)');
     return (
       <ChakraProvider>
-        <Box display="flex">
+        <VStack align="center" spacing={isSmallScreen ? '5' : '10'} mt="20px">
+        <HStack spacing="10">
           {}
           <Link to="/homepage"> {}
             <Box
-              width="200px"
-              height="200px"
+              width={isSmallScreen ? '100px' : '200px'}
+              height={isSmallScreen ? '100px' : '200px'}
              
-              margin="4"
+              margin={isSmallScreen ? '2':'4'}
               rounded="lg"
               _hover={{
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
@@ -33,10 +36,9 @@ const GamePage = () => {
         {}
         <Link to="/homepage?page=2"> {}
           <Box
-            width="200px"
-            height="200px"
-         
-            margin="4"
+            width={isSmallScreen ? '100px' : '200px'}
+            height={isSmallScreen ? '100px' : '200px'}
+            margin={isSmallScreen ? '2':'4'}
             rounded="lg"
             _hover={{
               boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
@@ -53,14 +55,16 @@ const GamePage = () => {
             />
           </Box>
         </Link>
+        </HStack>
 
         {/* Kotak 3 dengan Gambar */}
+        <HStack spacing="10">
         <Link to="/homepage?page=3">
         <Box
-          width="200px"
-          height="200px"
+          width={isSmallScreen ? '100px' : '200px'}
+          height={isSmallScreen ? '100px' : '200px'}
         
-          margin="4"
+          margin={isSmallScreen ? '2':'4'}
           rounded="lg"
           _hover={{
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
@@ -81,10 +85,10 @@ const GamePage = () => {
         {}
         <Link to="/homepage?page=4">
         <Box
-          width="200px"
-          height="200px"
+          width={isSmallScreen ? '100px' : '200px'}
+          height={isSmallScreen ? '100px' : '200px'}
        
-          margin="4"
+          margin={isSmallScreen ? '2':'4'}
           rounded="lg"
           _hover={{
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
@@ -101,15 +105,16 @@ const GamePage = () => {
           />
         </Box>
         </Link>
-
+        </HStack>
 
         {}
+        <HStack spacing="10">
         <Link to="/homepage?page=5">
         <Box
-          width="200px"
-          height="200px"
+          width={isSmallScreen ? '100px' : '200px'}
+          height={isSmallScreen ? '100px' : '200px'}
          
-          margin="4"
+          margin={isSmallScreen ? '2':'4'}
           rounded="lg"
           _hover={{
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
@@ -126,7 +131,8 @@ const GamePage = () => {
           />
         </Box>
         </Link>
-      </Box>
+        </HStack>
+        </VStack>
     </ChakraProvider>
   );
 };

@@ -4,6 +4,7 @@ import { getProductById } from '../modules/fetch';
 import ProductDetailComponent from '../component/detailedProduct';
 import OrderForm from '../component/orderForm';
 import ReviewsComponent from '../component/reviewTemplate';
+import { Center, useMediaQuery } from "@chakra-ui/react";
 import { HStack, VStack, useToast } from '@chakra-ui/react';
 
 const Orderpage = () => {
@@ -54,6 +55,8 @@ const Orderpage = () => {
       window.location.href = '/login';
     }
   };
+
+  const [isSmallScreen] = useMediaQuery("(max-width: 48em)");
   
 
   return (
@@ -61,7 +64,20 @@ const Orderpage = () => {
       {isLogin ? (
         product ? (
           <VStack alignItems="flex-start">
-            <HStack
+            {isSmallScreen ? (<VStack
+              marginBottom={20}
+              marginTop={10}
+              shadow="2xl"
+              padding={10}
+              borderRadius="xl"
+              bg="gray.100"
+              minW="100%"
+              justifyContent="center"
+            >
+              <ProductDetailComponent product={product} />
+              <OrderForm />
+            </VStack>):(
+              <HStack
               marginBottom={20}
               marginTop={10}
               shadow="2xl"
@@ -73,6 +89,7 @@ const Orderpage = () => {
               <ProductDetailComponent product={product} />
               <OrderForm />
             </HStack>
+            )}
             <ReviewsComponent />
           </VStack>
         ) : (
